@@ -3,10 +3,10 @@
 /* ------------------------------------------------------------------------- */
 /*                                Project Name                               */
 /* ------------------------------------------------------------------------- */
-/* FILE: Queue.h                                                          */
+/* FILE: Queue.h                                                             */
 /* ------------------------------------------------------------------------- */
 /* DESCRIPTION:                                                              */
-/* Queue.h description.                                                   */
+/* Queue.h description.                                                      */
 /* ------------------------------------------------------------------------- */
 /*                                                                           */
 /* Permission is hereby granted, free of charge, to any person obtaining a   */
@@ -52,6 +52,14 @@
 /*                             Public Data Types                             */
 /*****************************************************************************/
 
+/**
+ * @brief QueueNode
+ *          Holds the elements required to created a new node in the queue.
+ * 
+ *  Data: Modifiable data-type that stores the necessary data in each queue
+ *          node.
+ *  NextElement: Pointer to the NextElement (node) in the queue.
+ */
 typedef struct QueueNode
 {
     t_QueueData Data;
@@ -59,11 +67,25 @@ typedef struct QueueNode
 
 }t_QueueNode;
 
+/**
+ * @brief Queue object.
+ *          Holds the elements required for a typical queue data structure.
+ * 
+ *  FrontElement: Pointer that holds the address of the FrontElement in the
+ *                  queue.
+ *  RearElement: Pointer that holds the address of the RearElement in the
+ *                  queue.
+ *  NodesNumber: Current NodesNumber already enqueued in the queue.
+ *  MaxNumberOfNodes: MaxNumberOfNodes that the queue can support
+ *                      ( Defined explicitly in each queue object definition;
+ *                      e.g.: t_Queue Queue = {.MaxNumberOfNodes = 100}; ).
+ */
 typedef struct
 {
     t_QueueNode* FrontElement;
     t_QueueNode* RearElement;
     t_QueueNodesNumber NodesNumber;
+    const t_QueueNodesNumber MaxNumberOfNodes;
 
 }t_Queue;
 
@@ -80,7 +102,7 @@ typedef struct
 /*****************************************************************************/
 
 /**
- * @brief Create a Queue object
+ * @brief Creates a Queue object.
  * 
  * @param Queue 
  * @return t_Queue* 
@@ -88,7 +110,7 @@ typedef struct
 t_Queue* CreateQueue(t_Queue* Queue);
 
 /**
- * @brief 
+ * @brief Enqueue Data to a Queue object.
  * 
  * @param Queue 
  * @param Data 
@@ -97,7 +119,7 @@ t_Queue* CreateQueue(t_Queue* Queue);
 t_StatusCode Enqueue(t_Queue* Queue, t_QueueData Data);
 
 /**
- * @brief 
+ * @brief Dequeue Data from a Queue object.
  * 
  * @param Queue 
  * @return t_Data 

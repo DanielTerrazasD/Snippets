@@ -3,10 +3,10 @@
 /* ------------------------------------------------------------------------- */
 /*                                Project Name                               */
 /* ------------------------------------------------------------------------- */
-/* FILE: Queue_Config.c                                                   */
+/* FILE: Queue_Config.c                                                      */
 /* ------------------------------------------------------------------------- */
 /* DESCRIPTION:                                                              */
-/* Queue_Config.c description.                                            */
+/* Queue_Config.c description.                                               */
 /* ------------------------------------------------------------------------- */
 /*                                                                           */
 /* Permission is hereby granted, free of charge, to any person obtaining a   */
@@ -52,6 +52,11 @@
 /*                                 Constants                                 */
 /*****************************************************************************/
 
+/**
+ * @brief Definition of Data Defaults.
+ *          User-modifiable data type that is returned when there is nothing
+ *          left in the queue.
+ */
 const t_QueueData QueueDataDefaults =
 {
     .DataName = "Default_Data_Name"

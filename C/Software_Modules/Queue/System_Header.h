@@ -3,10 +3,10 @@
 /* ------------------------------------------------------------------------- */
 /*                                Project Name                               */
 /* ------------------------------------------------------------------------- */
-/* FILE: System_Header.h                                                          */
+/* FILE: System_Header.h                                                     */
 /* ------------------------------------------------------------------------- */
 /* DESCRIPTION:                                                              */
-/* System_Header.h description.                                                   */
+/* System_Header.h description.                                              */
 /* ------------------------------------------------------------------------- */
 /*                                                                           */
 /* Permission is hereby granted, free of charge, to any person obtaining a   */

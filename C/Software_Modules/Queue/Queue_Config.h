@@ -3,10 +3,10 @@
 /* ------------------------------------------------------------------------- */
 /*                                Project Name                               */
 /* ------------------------------------------------------------------------- */
-/* FILE: Queue_Config.h                                                   */
+/* FILE: Queue_Config.h                                                      */
 /* ------------------------------------------------------------------------- */
 /* DESCRIPTION:                                                              */
-/* Queue_Config.h description.                                            */
+/* Queue_Config.h description.                                               */
 /* ------------------------------------------------------------------------- */
 /*                                                                           */
 /* Permission is hereby granted, free of charge, to any person obtaining a   */
@@ -53,7 +53,6 @@
 /*                               Public Macros                               */
 /*****************************************************************************/
 
-#define MAX_QUEUE_NODES                 (uint8_t)(50)
 #define MAX_STRING_SIZE                 (uint8_t)(100)
 
 /*****************************************************************************/
@@ -62,6 +61,13 @@
 
 typedef uint8_t t_QueueNodesNumber;
 
+/**
+ * @brief t_QueueData stores all the data used in each queue node.
+ *          User-modifiable data type used to store data in queue nodes.
+ *          
+ *  If t_QueueData is modified, make sure to modify the
+ *  QueueDataDefaults in Queue_Config.c
+ */
 typedef struct
 {
     char DataName[MAX_STRING_SIZE];
@@ -72,6 +78,9 @@ typedef struct
 /*                              Public Constants                             */
 /*****************************************************************************/
 
+/**
+ * @brief Declaration of t_QueueData QueueDataDefaults to make it public.
+ */
 extern const t_QueueData QueueDataDefaults;
 
 /*****************************************************************************/

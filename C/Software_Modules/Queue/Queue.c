@@ -3,10 +3,10 @@
 /* ------------------------------------------------------------------------- */
 /*                                Project Name                               */
 /* ------------------------------------------------------------------------- */
-/* FILE: Queue.c                                                          */
+/* FILE: Queue.c                                                             */
 /* ------------------------------------------------------------------------- */
 /* DESCRIPTION:                                                              */
-/* Queue.c description.                                                   */
+/* Queue.c description.                                                      */
 /* ------------------------------------------------------------------------- */
 /*                                                                           */
 /* Permission is hereby granted, free of charge, to any person obtaining a   */
@@ -60,12 +60,26 @@
 /*                            Function Prototypes                            */
 /*****************************************************************************/
 
+/**
+ * @brief Checks whether Queue is empty or not.
+ * 
+ * @param Queue 
+ * @return uint8_t 
+ */
 uint8_t IsQueueEmpty(t_Queue* Queue);
 
 /*****************************************************************************/
 /*                            Function Definitions                           */
 /*****************************************************************************/
 
+/**
+ * @brief Creates a Queue object.
+ * 
+ *  Initializes all the parameters of t_Queue.
+ * 
+ * @param Queue 
+ * @return t_Queue* 
+ */
 t_Queue* CreateQueue(t_Queue* Queue)
 {
     Queue->FrontElement = NULL;
@@ -75,13 +89,25 @@ t_Queue* CreateQueue(t_Queue* Queue)
     return Queue;
 }
 
+/**
+ * @brief Enqueue Data to a Queue object.
+ * 
+ *  Allocates memory for a new node and append it to the rear of the queue.
+ *  returns t_StatusCode STATUS_SUCCESS if data was enqueued successfully,
+ *  otherwise returns STATUS_FAIL.
+ *  See System_Header.h for all the status codes.
+ * 
+ * @param Queue 
+ * @param Data 
+ * @return t_StatusCode 
+ */
 t_StatusCode Enqueue(t_Queue* Queue, t_QueueData Data)
 {
     t_QueueNode* NewNode;
     t_StatusCode Status = STATUS_SUCCESS;
 
 
-    if (Queue->NodesNumber < MAX_QUEUE_NODES)
+    if (Queue->NodesNumber < Queue->MaxNumberOfNodes)
     {
         NewNode = (t_QueueNode*)malloc(sizeof(t_QueueNode));
         
@@ -115,6 +141,16 @@ t_StatusCode Enqueue(t_Queue* Queue, t_QueueData Data)
     return Status;
 }
 
+/**
+ * @brief Dequeue Data from a Queue object.
+ * 
+ *  Frees memory of the FrontElement of the queue and returns its data.
+ *  If queue is empty, function returns the QueueDataDefaults defined in
+ *  Queue_Config.c
+ * 
+ * @param Queue 
+ * @return t_QueueData 
+ */
 t_QueueData Dequeue(t_Queue* Queue)
 {
     t_QueueData Data = QueueDataDefaults;
@@ -137,6 +173,12 @@ t_QueueData Dequeue(t_Queue* Queue)
     return Data;
 }
 
+/**
+ * @brief Checks whether Queue is empty or not.
+ * 
+ * @param Queue 
+ * @return uint8_t 
+ */
 uint8_t IsQueueEmpty(t_Queue* Queue)
 {
     return (Queue->FrontElement == NULL);
