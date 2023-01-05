@@ -1,0 +1,215 @@
+1. C++ Version
+    C++ 17
+
+2. Header Files
+
+    2.1. Self-contained Headers
+        ~ Headers should be self-contained (compile on their own) and end in .h.
+        ~ When a header declares inline functions or templates that clients of
+          the header will instantiate, the inline functions and templates must
+          also have definitions in the header.
+
+    2.2. The #define Guard
+        ~ All header files should have #define guards to prevent multiple
+        inclusion. The format of the symbol name should be:
+            <PROJECT>_<PATH>_<FILE>_H_
+
+        For example, the file foo/src/bar/baz.h in project foo.
+            #ifndef FOO_BAR_BAZ_H_
+            #define FOO_BAR_BAZ_H_
+                ...
+            #endif // FOO_BAR_BAZ_H_
+
+    2.3. Inline Functions
+        ~ Define functions inline only when they are small, 10 lines or fewer.
+
+    2.4. Names and Order of Includes
+        ~ Include headers in the following order: Related header,
+          C system headers, C++ system headers, other libraries' headers, your
+          project's headers.
+
+        For example:
+            #include "foo/server/fooserver.h"
+
+            #include <sys/types.h>
+            #include <unistd.h>
+
+            #include <string>
+            #include <vector>
+            
+            #include "base/basictypes.h"
+            #include "foo/server/bar.h"
+            #include "third_party/absl/flags/flag.h"
+
+3. Classes
+    3.1. Implicit Conversions
+        ~ Do not define implicit conversions. Use the explicit keyword for
+          conversion operators and single-argument constructors.
+
+        For example:
+            class Foo {
+                explicit Foo(int x, double y);
+            };
+
+    3.2. Copyable and Movable types
+        ~ A class's public API must make clear whether the class is copyable,
+          move-only, or neither copyable nor movable.
+
+            class Copyable {
+            public:
+                Copyable(const Copyable& other) = default;
+                Copyable& operator=(const Copyable& other) = default;
+
+                // The implicit move operations are suppressed by the declarations above.
+                // You may explicitly declare move operations to support efficient moves.
+            };
+
+            class MoveOnly {
+            public:
+                MoveOnly(MoveOnly&& other) = default;
+                MoveOnly& operator=(MoveOnly&& other) = default;
+
+                // The copy operations are implicitly deleted, but you can
+                // spell that out explicitly if you want:
+                MoveOnly(const MoveOnly&) = delete;
+                MoveOnly& operator=(const MoveOnly&) = delete;
+            };
+
+            class NotCopyableOrMovable {
+            public:
+                // Not copyable or movable
+                NotCopyableOrMovable(const NotCopyableOrMovable&) = delete;
+                NotCopyableOrMovable& operator=(const NotCopyableOrMovable&) = delete;
+
+                // The move operations are implicitly disable, but you can
+                // spell that out explicitly if you want:
+                NotCopyableOrMovable(NotCopyableOrMovable&&) = delete;
+                NotCopyableOrMovable& operator=(NotCopyableOrMovable&&) = delete;
+            };
+    
+        3.3. Structs vs Classes
+            ~ Use a struct only for passive objects that carry data; everything
+              else is a class.
+
+        3.4. Structs vs Pairs and Tuples
+            ~ Prefer to use a struct instead of a pair or a tuple whenever the
+              elements can have meaningful names.
+
+        3.5. Declaration Order
+            ~ Group similar declarations together, placing public parts
+            earlier, then protected and finally private.
+
+            ~ Prefer the following order:
+                1. Types and type aliases (typedef, using, enum, nested structs/classes, and friend types)
+                2. Static constants
+                3. Factory functions
+                4. Constructors and assignment operators
+                5. Destructor
+                6. All other functions (static and non-static member functions, and friend functions)
+                7. Data members (static and non-static)
+
+4. Naming
+
+    4.1. General Naming Rules
+        ~ Optimize for readability using names that would be clear even to
+          people on a different team.
+
+        ~ Use names that describe the purpose or intent of the object. Do not
+          worry about saving horizontal space as it is far more important to
+          make your code immediately understandable. Minimize the use of
+          abbreviations that would be unknown to someone outside the project.
+
+    4.2. File Names
+        ~ Filenames should be all lowercase and can include underscores (_) or
+          dashes (-). 
+
+        For example:
+            my_useful_class.cc
+            my-useful-class.cc
+            myusefulclass.cc
+            myusefulclass_test.cc
+
+    4.3. Type Names
+        ~ Type names start with a capital letter and have a capital letter for
+          each new word, with no underscores:
+
+        For example:
+            // classes and structs
+            class UrlTable { ... }
+            struct UrlTableProperties { ... }
+
+            // typedefs
+            typedef hash_map<UrlTableProperties*, std::string> PropertiesMap;
+
+            // aliases
+            using PropertiesMap = hash_map<UrlTableProperties*, std::string>;
+
+            // enums
+            enum class UrlTableError { ... }
+
+
+    4.4. Variable Names
+        ~ The names of variables (including function parameters) and data
+          members are all lowercase, with underscores between words.
+
+        ~ Data members of classes (but not structs) additionally have trailing
+          underscores.
+
+        4.4.1. Common Variable Names
+            std::string table_name; // lowercase with underscore
+
+        4.4.2. Class Data Members
+            class TableInfo {
+            private:
+                std::string table_name_; // underscore at end.
+                static Pool<TableInfo>* pool_; // underscore at end.
+            };
+
+        4.4.3. Struct Data Members
+            struct UrlTableProperties {
+                std::string name;
+                int num_entries;
+                static Pool<UrlTableProperties>* pool;
+            };
+
+    4.5. Constant Names
+        ~ Variables declared constexpr or const, and whose value is fixed for
+          the duration of the program, are named with a leading "k" followed
+          by mixed case. Underscores can be used as separators in rare cases.
+
+        For example:
+            const int kDaysInAWeek = 7;
+            const int kAndroid8_0_0 = 7; // Android 8.0.0
+
+    4.6. Function Names
+        ~ Regular functions have mixed case; accessors and mutators may be
+          named like variables. Functions should start with a capital letter
+          and have a capital letter for each new word.
+
+        AddTableEntry()
+        DeleteUrl()
+        OpenFileOrDie()
+
+    4.7. Namespace Names
+        ~ Namespaces names are all lower-case, with words separated by
+          underscores. Keep in mind that the rule against abbreviated names
+          applies to namespaces just as much as variables names.
+
+    4.8. Enumerator Names
+        ~ Enumerators (both scoped and unscoped enums) should be named like
+          constants, not like macros.
+        
+        For example:
+            enum class UrlTableError {
+                kOk = 0,
+                kOutOfMemory,
+                kMalformedInput,
+            };
+
+    4.9. Macro Names
+        ~ In general macros should not be used. However, if they are absolutely
+          needed, then they should be named with all capitals and underscores.
+
+        For example:
+            #define ROUND(x) ...
+            #define PI_ROUNDED 3.0
